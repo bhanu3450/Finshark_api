@@ -50,9 +50,23 @@ namespace Finshark_api.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] Upda)
+        public IActionResult Update([FromRoute] int id, [FromBody] UpdateDto updateDto)
         {
+            var stockModel = _context.Stocks.Find( id );
+            
+            if(stockModel == null)
+            {
+                return NotFound();
+            }
 
+            stockModel.Purchase = updateDto.Purchase;
+            stockModel.Symbol = updateDto.Symbol;
+            stockModel.Purchase = updateDto.Purchase;
+            stockModel.LastDiv = updateDto.LastDiv;
+            stockModel.MarketCap = updateDto.MarketCap;
+            stockModel.CompanyName = updateDto.CompanyName;
+
+            return Ok(stockModel.ToStockDto());  
         }
 
     }
