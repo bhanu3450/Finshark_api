@@ -18,5 +18,18 @@ namespace Finshark_api.Mappers
                 Purchase = stockModel.Purchase,
             };
         }
+
+        public static Stock ToStockFromCreateDTO(this CreateStockRequestDto stockDto)
+        {
+            return new Stock
+            {
+                Symbol = stockDto.Symbol,
+                CompanyName = stockDto.CompanyName,
+                LastDiv = stockDto.LastDiv,
+                Purchase = stockDto.Purchase,
+                Industry = stockDto.Industry,
+                MarketCap = stockDto.MarketCap,
+            };
+        }
     }
 }
