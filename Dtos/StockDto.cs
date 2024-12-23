@@ -19,5 +19,7 @@ namespace Finshark_api.Dtos
 
         public long MarketCap { get; set; }
 
+        public List<CommentDto> Comments { get; set; }
+
     }
 }
