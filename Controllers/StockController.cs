@@ -1,6 +1,7 @@
-﻿using Finshark_api.Dtos;
+﻿using Finshark_api.Data;
+using Finshark_api.Dtos;
+using Finshark_api.Interfaces;
 using Finshark_api.Mappers;
-using Finshark_api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,15 +13,18 @@ namespace Finshark_api.Controllers
     public class StockController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        public StockController(ApplicationDbContext context)
+        private readonly IStockRepository _stockRepository;
+
+        public StockController(ApplicationDbContext context, IStockRepository stockRepository)
         {
             _context = context;
+            _stockRepository = stockRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var stocksModel = await _context.Stocks.ToListAsync()
+            var stocksModel = await _stockRepository.GetAllAsync();
                         
             var stocks = stocksModel.Select(s => s.ToStockDto());
             return Ok(stocks);
@@ -29,7 +33,7 @@ namespace Finshark_api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var stock = await _context.Stocks.FindAsync(id );
+            var stock = await _stockRepository.GetByIdAsync(id);
 
             if(stock == null)
             {
@@ -43,8 +47,7 @@ namespace Finshark_api.Controllers
         public  async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto)
         {
             var stock = stockDto.ToStockFromCreateDTO();
-           await _context.Stocks.AddAsync(stock);   
-           await  _context.SaveChangesAsync();
+            await _stockRepository.CreateAsync(stock);
 
             return CreatedAtAction( nameof(GetById), new { id = stock.Id}, stock.ToStockDto());
         }
@@ -53,21 +56,12 @@ namespace Finshark_api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateDto updateDto)
         {
-            var stockModel = await _context.Stocks.FindAsync( id );
+            var stockModel = await _stockRepository.UpdateAsync(id, updateDto);
             
             if(stockModel == null)
             {
                 return NotFound();
-            }
-
-            stockModel.Purchase = updateDto.Purchase;
-            stockModel.Symbol = updateDto.Symbol;
-            stockModel.Purchase = updateDto.Purchase;
-            stockModel.LastDiv = updateDto.LastDiv;
-            stockModel.MarketCap = updateDto.MarketCap;
-            stockModel.CompanyName = updateDto.CompanyName;
-
-            await _context.SaveChangesAsync();
+            }         
 
             return Ok(stockModel.ToStockDto());  
         }
@@ -76,16 +70,12 @@ namespace Finshark_api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id) 
         {
-            var stockModel = await _context
-                .Stocks.FirstOrDefaultAsync( x=> x.Id == id);
+            var stockModel = await _stockRepository.DeleteAsync(id);
 
             if(stockModel == null)
             {
                 return NotFound();
             }
-
-            _context.Stocks.Remove(stockModel);
-             await _context.SaveChangesAsync();
 
             return NoContent();
 
