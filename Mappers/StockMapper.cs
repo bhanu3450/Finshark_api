@@ -16,6 +16,7 @@ namespace Finshark_api.Mappers
                 Industry = stockModel.Industry,
                 MarketCap = stockModel.MarketCap,
                 Purchase = stockModel.Purchase,
+                Comments = stockModel.Comments.Select( x => x.ToCommentDto() ).ToList()
             };
         }
 
