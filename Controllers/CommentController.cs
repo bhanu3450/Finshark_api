@@ -21,6 +21,11 @@ namespace Finshark_api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var comments = await _commentRepo.GetAllAsync();
             var commentDto = comments.Select(s => s.ToCommentDto());
 
@@ -31,6 +36,11 @@ namespace Finshark_api.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var comment = await _commentRepo.GetByIdAsync(id);
 
             if (comment == null)
@@ -45,6 +55,11 @@ namespace Finshark_api.Controllers
         [Route("{stockId:int}")]
         public async Task<IActionResult> CreateComment([FromRoute] int stockId, CreateCommentDto createCommentDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (!await _stockRepo.StockExists(stockId))
             {
                 return BadRequest("Stock does not Exist");
@@ -61,6 +76,11 @@ namespace Finshark_api.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> UpdateComment([FromRoute] int id, [FromBody] UpdateCommentDto updateCommentDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var comment = await _commentRepo.UpdateAsync(id, updateCommentDto.ToCommentFromUpdate());
 
             if (comment == null)
@@ -75,6 +95,11 @@ namespace Finshark_api.Controllers
         [Route("{id:int}")]
         public async Task<IActionResult> DeleteComment([FromRoute] int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var comment = await _commentRepo.DeleteAsync(id);
 
             if (comment == null)
