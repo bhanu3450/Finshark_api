@@ -1,4 +1,4 @@
-﻿namespace Finshark_api.Dtos
+﻿namespace Finshark_api.Dtos.Comment
 {
     public class CommentDto
     {
@@ -10,5 +10,5 @@
         public DateTime CreatedOn { get; set; } = DateTime.Now;
 
         public int? StockId { get; set; }
-    } 
+    }
 }

@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Finshark_api.Dtos.Comment;
 
-namespace Finshark_api.Dtos
+namespace Finshark_api.Dtos.Stock
 {
     public class StockDto
     {
-  
+
         public int Id { get; set; }
         public string Symbol { get; set; } = string.Empty;
 
