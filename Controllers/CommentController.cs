@@ -1,4 +1,4 @@
-﻿using Finshark_api.Dtos;
+﻿using Finshark_api.Dtos.Comment;
 using Finshark_api.Interfaces;
 using Finshark_api.Mappers;
 using Microsoft.AspNetCore.Mvc;

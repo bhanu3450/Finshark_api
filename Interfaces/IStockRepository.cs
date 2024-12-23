@@ -1,4 +1,4 @@
-﻿using Finshark_api.Dtos;
+﻿using Finshark_api.Dtos.Stock;
 using Finshark_api.Models;
 
 namespace Finshark_api.Interfaces

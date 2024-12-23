@@ -1,5 +1,5 @@
 ﻿using Finshark_api.Data;
-using Finshark_api.Dtos;
+using Finshark_api.Dtos.Stock;
 using Finshark_api.Interfaces;
 using Finshark_api.Models;
 using Microsoft.EntityFrameworkCore;
